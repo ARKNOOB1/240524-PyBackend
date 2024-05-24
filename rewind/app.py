@@ -46,6 +46,23 @@ def follow():
     else:
         user['follow'] = [userIdToFollow]
         return jsonify(user)
+    
+@app.route('/unfollow', methods=['POST'])
+def unfollow():
+    payload = request.json
+    userId = int(payload['id'])
+    userIdToFollow = int(payload['unfollow'])
+
+    if userId not in app.users or userIdToFollow not in app.users:
+        return '사용자가 존재하지 않습니다.', 400
+    
+    user = app.users[userId]
+    if user.get('follow'):
+        try:    user['follow'].remove(userIdToFollow)
+        except: pass
+    else:
+        user['follow'] = []
+    return jsonify(user)
 
 if __name__ == '__main__':
     app.run()
