@@ -1,9 +1,17 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request ,render_template
 
 app = Flask(__name__)
 app.users = {}
 app.posts = []
 app.idCnt = 1
+
+@app.route('/main', methods=['GET'])
+def main():
+    return render_template('main.html', users=app.users)
+
+@app.route('/sign-up', methods=['GET'])
+def signUpPage():
+    return render_template('signup.html')
 
 @app.route('/sign-up', methods=['POST'])
 def signUp():
